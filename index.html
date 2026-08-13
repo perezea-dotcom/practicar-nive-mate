@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Práctica · Nivelación en Matemáticas · Universidad del Pacífico</title>
+<meta name="description" content="Banco de práctica con preguntas de exámenes pasados, por temas y con solución.">
+
+<link rel="stylesheet" href="assets/estilos.css">
+
+<!-- KaTeX renderiza las fórmulas escritas entre signos de dólar.
+     Va incluido en la carpeta, así que el sitio funciona sin internet. -->
+<link rel="stylesheet" href="assets/katex/katex.min.css">
+<script defer src="assets/katex/katex.min.js"></script>
+<script defer src="assets/katex/auto-render.min.js"></script>
+</head>
+<body>
+
+<div class="cinta"><div id="progreso"></div></div>
+
+<header class="principal">
+  <div class="envoltura">
+    <div class="titulo-sitio">
+      <!-- El logo aparece solo si existe el archivo assets/logo-up.png.
+           Si no está, esta línea se oculta sola y no se ve nada roto. -->
+      <img class="logo" src="assets/logo-up.png" alt="Universidad del Pacífico"
+           onerror="this.remove()">
+      <div>Práctica · Nivelación en Matemáticas
+        <small>Departamento de Economía · Universidad del Pacífico</small>
+      </div>
+    </div>
+    <div class="estado oculto" id="estado">
+      <span id="contador"></span>
+      <span class="crono" id="crono">0:00</span>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- ============ 1. CONFIGURACIÓN ============ -->
+  <section id="config" class="pantalla">
+    <h1>¿Qué quieres practicar?</h1>
+    <p class="bajada">
+      Elige los temas, cuántas preguntas quieres y cuánto tiempo te das.
+      Las preguntas y sus alternativas salen barajadas, así que cada intento es distinto.
+      Las soluciones aparecen al final, como en un examen real.
+    </p>
+
+    <div class="seccion">
+      <span class="etiqueta-campo">Temas
+        <button class="enlace-mini" id="todos">todos</button>
+        <button class="enlace-mini" id="ninguno">ninguno</button>
+      </span>
+      <div class="temas" id="temas"></div>
+      <p class="aviso oculto" id="aviso">Selecciona al menos un tema para empezar.</p>
+    </div>
+
+    <div class="seccion fila-campos">
+      <div class="campo">
+        <span class="etiqueta-campo">Cantidad</span>
+        <select id="cantidad"></select>
+        <p class="cifra" style="text-align:left;margin-top:.5rem" id="disponibles"></p>
+      </div>
+      <div class="campo">
+        <span class="etiqueta-campo">Tiempo</span>
+        <select id="tiempo">
+          <option value="0">Sin límite</option>
+          <option value="1">1 minuto por pregunta</option>
+          <option value="1.5" selected>1 minuto y medio por pregunta</option>
+          <option value="2">2 minutos por pregunta</option>
+          <option value="3">3 minutos por pregunta</option>
+        </select>
+        <p class="cifra" style="text-align:left;margin-top:.5rem">El cronómetro corre para toda la práctica.</p>
+      </div>
+    </div>
+
+    <button class="btn lleno grande" id="empezar">Empezar práctica</button>
+
+    <!-- Aviso de recolección de datos. Solo aparece si está configurada
+         la URL en assets/config.js. -->
+    <p class="nota-datos oculto" id="aviso-datos"></p>
+  </section>
+
+  <!-- ============ 2. PRÁCTICA ============ -->
+  <section id="practica" class="pantalla oculto">
+    <div class="puntos" id="puntos"></div>
+    <div class="tarjeta-pregunta" id="tarjeta"></div>
+    <div class="barra-nav">
+      <div class="izq">
+        <button class="btn" id="anterior">Anterior</button>
+        <button class="btn" id="siguiente">Siguiente</button>
+      </div>
+      <button class="btn lleno" id="terminar">Terminar</button>
+    </div>
+  </section>
+
+  <!-- ============ 3. RESULTADOS ============ -->
+  <section id="resultados" class="pantalla oculto"></section>
+
+</main>
+
+<footer class="pie">
+  <div class="envoltura">
+    Banco de práctica · <span id="total-banco">0</span> preguntas cargadas ·
+    Material de estudio, no reemplaza las evaluaciones oficiales del curso.
+  </div>
+</footer>
+
+<!-- ============ BANCOS DE PREGUNTAS ============
+     Para agregar un curso o capítulo nuevo: crea el archivo en la carpeta
+     banco/ y añádelo aquí con una línea igual a la de abajo. -->
+<script src="banco/logica.js"></script>
+
+<script src="assets/config.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>
