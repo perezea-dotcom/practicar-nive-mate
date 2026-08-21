@@ -139,8 +139,8 @@ function agruparTemas(){
 
 function casillas(lista){
   return lista.map(function(t,k){
-    return '<label class="tema activo">' +
-             '<input type="checkbox" checked value="' + k + '">' +
+    return '<label class="tema">' +
+             '<input type="checkbox" value="' + k + '">' +
              '<span class="nombre">' + t.nombre + '</span>' +
              '<span class="cuenta">' + t.total + '</span>' +
            '</label>';
@@ -175,7 +175,7 @@ function pintarSimulacros(){
 }
 
 function lanzarSimulacro(nombre){
-  marcarTodos("#temas", true);
+  marcarTodos("#temas", false);   // sin restricción de tema
   $$("#examenes input").forEach(function(i){
     var activo = examenes[+i.value].nombre === nombre;
     i.checked = activo;
@@ -224,7 +224,10 @@ function marcarTodos(sel, v){
   actualizarDisponibles();
 }
 function elegidos(sel, lista){
-  return $$(sel + " input:checked").map(function(i){ return lista[+i.value].nombre; });
+  var marcados = $$(sel + " input:checked").map(function(i){ return lista[+i.value].nombre; });
+  // Sin nada marcado el filtro no restringe: es "todos", no "ninguno".
+  // Así el sitio nunca queda en un estado muerto sin preguntas disponibles.
+  return marcados.length ? marcados : lista.map(function(t){ return t.nombre; });
 }
 function preguntasDisponibles(){
   var t = elegidos("#temas", temas);
