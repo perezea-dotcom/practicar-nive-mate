@@ -85,6 +85,11 @@ h2{font-size:1.35rem; color:var(--verde); margin-bottom:.8rem}
 .tema.vacio{opacity:.45}
 .tema.vacio .cuenta{background:#F1F3F1; color:#9AA69E}
 
+.nota-filtro{
+  color:var(--gris); font-size:.9rem; line-height:1.4;
+  margin:-.35rem 0 .8rem; text-align:left;
+}
+.nota-filtro b{color:var(--verde); font-weight:600}
 .fichas{display:flex; flex-wrap:wrap; gap:.6rem}
 .ficha{
   display:flex; flex-direction:column; align-items:flex-start; gap:.15rem;
