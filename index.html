@@ -61,8 +61,9 @@
     <div class="seccion">
       <span class="etiqueta-campo">Temas
         <button class="enlace-mini" id="todos">todos</button>
-        <button class="enlace-mini" id="ninguno">ninguno</button>
+        <button class="enlace-mini" id="ninguno">limpiar</button>
       </span>
+      <p class="nota-filtro">Si no marcas ninguno, entran <b>todos</b> los temas.</p>
       <div class="temas" id="temas"></div>
     </div>
 
@@ -71,14 +72,16 @@
     <div class="seccion oculto" id="bloque-examenes">
       <span class="etiqueta-campo">Tipo de evaluación
         <button class="enlace-mini" id="todos-ex">todos</button>
-        <button class="enlace-mini" id="ninguno-ex">ninguno</button>
+        <button class="enlace-mini" id="ninguno-ex">limpiar</button>
       </span>
+      <p class="nota-filtro">Si no marcas ninguno, entran <b>todas</b> las evaluaciones.</p>
       <div class="temas" id="examenes"></div>
     </div>
 
     <div class="seccion">
       <p class="aviso oculto" id="aviso">
-        No hay preguntas con esa combinación. Amplía los temas o los tipos de evaluación.
+        No hay preguntas que sean de esos temas <b>y</b> de esas evaluaciones a la vez.
+        Prueba desmarcando algo.
       </p>
     </div>
 
