@@ -21,9 +21,9 @@ window.CONFIG = {
   /* Minutos que dura cada simulacro. Si un tipo de evaluación no está en esta
      lista, se calcula 1 minuto y medio por pregunta. Ajusta según tus tiempos
      reales de examen. */
-  duraciones: {
-    "PC1": 50, "PC2": 50, "PC3": 50, "PC4": 50,
-    "Examen parcial": 110, "Examen final": 110
+   duraciones: {
+    "PC1": 100, "PC2": 100, "PC3": 100, "PC4": 100,
+    "Examen parcial": 120, "Examen final": 120
   },
 
   /* Texto del aviso que ven los alumnos. Solo se muestra si urlDatos tiene
