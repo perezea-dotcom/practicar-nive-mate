@@ -12,7 +12,22 @@ var $$ = function(s){ return Array.prototype.slice.call(document.querySelectorAl
 
 /* ---------- Estado ---------- */
 var temas = [];        // [{nombre, total}]
+var examenes = [];     // [{nombre, total}]  tipos de evaluación
 var sesion = null;     // {preguntas:[], indice, segundos, limite, timer}
+
+/* Tipo de evaluación de una pregunta.
+   Si el campo "examen" no está puesto, se deduce del texto de "fuente":
+   "PC1 2019-1" → PC1 · "EP 2020-2" → EP · "Clase 03" → Material de clase. */
+function examenDe(p){
+  if(p.examen) return p.examen;
+  var f = p.fuente || "";
+  var pc = f.match(/\bPC\s*(\d)/i);          if(pc) return "PC" + pc[1];
+  if(/\bEF\b|final/i.test(f))                return "Examen final";
+  if(/\bEP\b|parcial/i.test(f))              return "Examen parcial";
+  if(/\bPC\b|pr[áa]ctica/i.test(f))          return "Práctica calificada";
+  if(/clase|teor[íi]a|separata/i.test(f))    return "Material de clase";
+  return "Otros";
+}
 
 /* ---------- Utilidades ---------- */
 function barajar(a){
@@ -37,6 +52,71 @@ function mate(el){
     });
   }catch(e){ /* si falla, el texto se ve tal cual: no rompe la práctica */ }
 }
+// Quita etiquetas HTML y convierte el LaTeX a símbolos, para que el texto
+// llegue legible a la hoja de cálculo ("p → q" en vez de "$p \rightarrow q$").
+var SIMBOLOS = [
+  [/\\leftrightarrow/g, "↔"], [/\\rightarrow/g, "→"], [/\\veebar/g, "⊻"],
+  [/\\wedge/g, "∧"],          [/\\vee/g, "∨"],        [/\\neg/g, "¬"],
+  [/\\equiv/g, "≡"],          [/\\to/g, "→"],         [/\\quad/g, " "]
+];
+function textoPlano(html){
+  var d = document.createElement("div");
+  d.innerHTML = String(html || "");
+  var t = d.textContent || "";
+  SIMBOLOS.forEach(function(par){ t = t.replace(par[0], par[1]); });
+  return t.replace(/\$/g, "")            // delimitadores de fórmula
+          .replace(/\\[a-zA-Z]+/g, "")   // cualquier comando LaTeX que quede
+          .replace(/\s+/g, " ").trim();
+}
+
+/* ---------- Envío anónimo de resultados (opcional) ----------
+   Se activa solo si assets/config.js tiene una URL. Nunca se envía nombre,
+   código ni nada que identifique al alumno: solo tema, acierto y alternativa
+   elegida, para saber qué reforzar en clase. */
+function datosActivos(){
+  return !!(window.CONFIG && window.CONFIG.urlDatos);
+}
+function enviarDatos(buenas, usado){
+  if(!datosActivos()) return;
+  try{
+    var cfg = window.CONFIG, s = sesion;
+    var idIntento = "i" + Math.random().toString(36).slice(2,10) + Date.now().toString(36);
+    var sello = new Date().toISOString();
+
+    var filas = s.preguntas.map(function(p,k){
+      return [
+        sello,                                                  // marca de tiempo
+        idIntento,                                              // agrupa las filas de un mismo intento
+        cfg.curso || "",                                        // curso / sección
+        k + 1,                                                  // posición en la práctica
+        p.ref.tema,                                             // tema
+        p.ref.fuente || "",                                     // fuente (PC1 2014-0, etc.)
+        textoPlano(p.ref.enunciado).slice(0,200),               // pregunta
+        textoPlano(p.opciones[p.correcta]).slice(0,140),        // respuesta correcta
+        p.respuesta === null                                    // qué marcó el alumno
+          ? "(sin responder)"
+          : textoPlano(p.opciones[p.respuesta]).slice(0,140),
+        p.respuesta === p.correcta ? 1 : 0,                     // acierto
+        s.preguntas.length,                                     // preguntas del intento
+        buenas,                                                 // puntaje del intento
+        usado,                                                  // segundos empleados
+        s.limite                                                // segundos disponibles (0 = sin límite)
+      ];
+    });
+
+    var cuerpo = JSON.stringify({filas: filas});
+    // sendBeacon sobrevive aunque el alumno cierre la pestaña de inmediato.
+    if(navigator.sendBeacon){
+      var blob = new Blob([cuerpo], {type:"text/plain;charset=utf-8"});
+      if(navigator.sendBeacon(cfg.urlDatos, blob)) return;
+    }
+    fetch(cfg.urlDatos, {
+      method:"POST", mode:"no-cors", keepalive:true,
+      headers:{"Content-Type":"text/plain;charset=utf-8"}, body:cuerpo
+    })["catch"](function(){ /* si falla el envío, la práctica no se entera */ });
+  }catch(e){ /* nunca romper la práctica por culpa del envío */ }
+}
+
 function pantalla(id){
   $$(".pantalla").forEach(function(p){ p.classList.add("oculto"); });
   $("#" + id).classList.remove("oculto");
@@ -44,47 +124,143 @@ function pantalla(id){
 }
 
 /* ---------- Configuración ---------- */
-function agruparTemas(){
+function agrupar(clave){
   var mapa = {};
   (window.BANCO || []).forEach(function(p){
-    mapa[p.tema] = (mapa[p.tema] || 0) + 1;
+    var v = clave(p);
+    mapa[v] = (mapa[v] || 0) + 1;
   });
-  temas = Object.keys(mapa).sort().map(function(n){ return {nombre:n, total:mapa[n]}; });
+  return Object.keys(mapa).sort().map(function(n){ return {nombre:n, total:mapa[n]}; });
+}
+function agruparTemas(){
+  temas    = agrupar(function(p){ return p.tema; });
+  examenes = agrupar(examenDe);
 }
 
-function pintarConfig(){
-  var cont = $("#temas");
-  cont.innerHTML = temas.map(function(t,k){
-    return '<label class="tema activo" data-tema="' + k + '">' +
+function casillas(lista){
+  return lista.map(function(t,k){
+    return '<label class="tema activo">' +
              '<input type="checkbox" checked value="' + k + '">' +
              '<span class="nombre">' + t.nombre + '</span>' +
              '<span class="cuenta">' + t.total + '</span>' +
            '</label>';
   }).join("");
-  cont.addEventListener("change", function(e){
-    if(e.target.tagName !== "INPUT") return;
-    e.target.closest(".tema").classList.toggle("activo", e.target.checked);
-    actualizarDisponibles();
+}
+
+/* Simulacros: un botón por tipo de evaluación real. Al pulsarlo se selecciona
+   todo ese tipo, todos los temas, todas sus preguntas, y el tiempo real del
+   examen; y arranca de inmediato. */
+var NO_SIMULABLES = ["Material de clase", "Otros"];
+
+function pintarSimulacros(){
+  var tipos = examenes.filter(function(e){ return NO_SIMULABLES.indexOf(e.nombre) < 0; });
+  $("#bloque-simulacros").classList.toggle("oculto", tipos.length === 0);
+  if(!tipos.length) return;
+
+  var dur = (window.CONFIG && window.CONFIG.duraciones) || {};
+  $("#simulacros").innerHTML = tipos.map(function(t){
+    var min = dur[t.nombre] || Math.round(t.total * 1.5);
+    return '<button class="ficha" data-sim="' + t.nombre.replace(/"/g,"&quot;") + '">' +
+             '<b>' + t.nombre + '</b>' +
+             '<span>' + t.total + (t.total === 1 ? " pregunta" : " preguntas") +
+             " · " + min + " min</span>" +
+           '</button>';
+  }).join("");
+
+  $("#simulacros").addEventListener("click", function(e){
+    var b = e.target.closest("[data-sim]");
+    if(!b) return;
+    lanzarSimulacro(b.dataset.sim);
   });
-  $("#todos").onclick   = function(){ marcarTodos(true);  };
-  $("#ninguno").onclick = function(){ marcarTodos(false); };
+}
+
+function lanzarSimulacro(nombre){
+  marcarTodos("#temas", true);
+  $$("#examenes input").forEach(function(i){
+    var activo = examenes[+i.value].nombre === nombre;
+    i.checked = activo;
+    i.closest(".tema").classList.toggle("activo", activo);
+  });
+  actualizarDisponibles();
+
+  var n = preguntasDisponibles().length;
+  if(!n) return;
+  var sel = $("#cantidad");
+  sel.value = sel.options[sel.options.length - 1].value;   // todas las disponibles
+
+  var dur = (window.CONFIG && window.CONFIG.duraciones) || {};
+  var min = dur[nombre] || Math.round(n * 1.5);
+  empezar(min * 60);
+}
+
+function pintarConfig(){
+  $("#temas").innerHTML = casillas(temas);
+  $("#examenes").innerHTML = casillas(examenes);
+
+  // El filtro por tipo de evaluación solo tiene sentido si hay más de uno.
+  $("#bloque-examenes").classList.toggle("oculto", examenes.length < 2);
+  pintarSimulacros();
+
+  ["#temas", "#examenes"].forEach(function(sel){
+    $(sel).addEventListener("change", function(e){
+      if(e.target.tagName !== "INPUT") return;
+      e.target.closest(".tema").classList.toggle("activo", e.target.checked);
+      actualizarDisponibles();
+    });
+  });
+
+  $("#todos").onclick      = function(){ marcarTodos("#temas", true);  };
+  $("#ninguno").onclick    = function(){ marcarTodos("#temas", false); };
+  $("#todos-ex").onclick   = function(){ marcarTodos("#examenes", true);  };
+  $("#ninguno-ex").onclick = function(){ marcarTodos("#examenes", false); };
   actualizarDisponibles();
 }
-function marcarTodos(v){
-  $$("#temas input").forEach(function(i){
+
+function marcarTodos(sel, v){
+  $$(sel + " input").forEach(function(i){
     i.checked = v;
     i.closest(".tema").classList.toggle("activo", v);
   });
   actualizarDisponibles();
 }
-function temasElegidos(){
-  return $$("#temas input:checked").map(function(i){ return temas[+i.value].nombre; });
+function elegidos(sel, lista){
+  return $$(sel + " input:checked").map(function(i){ return lista[+i.value].nombre; });
 }
 function preguntasDisponibles(){
-  var sel = temasElegidos();
-  return (window.BANCO || []).filter(function(p){ return sel.indexOf(p.tema) >= 0; });
+  var t = elegidos("#temas", temas);
+  var e = elegidos("#examenes", examenes);
+  return (window.BANCO || []).filter(function(p){
+    return t.indexOf(p.tema) >= 0 && e.indexOf(examenDe(p)) >= 0;
+  });
 }
+// Cada casilla muestra cuántas preguntas aporta CONTANDO el otro filtro.
+// Así, al elegir "PC1", junto a cada tema ves cuántas PC1 hay de ese tema.
+function refrescarCuentas(){
+  var t = elegidos("#temas", temas);
+  var e = elegidos("#examenes", examenes);
+  var banco = window.BANCO || [];
+
+  $$("#temas .tema").forEach(function(el,k){
+    var nombre = temas[k].nombre;
+    var n = banco.filter(function(p){
+      return p.tema === nombre && e.indexOf(examenDe(p)) >= 0;
+    }).length;
+    el.querySelector(".cuenta").textContent = n;
+    el.classList.toggle("vacio", n === 0);
+  });
+
+  $$("#examenes .tema").forEach(function(el,k){
+    var nombre = examenes[k].nombre;
+    var n = banco.filter(function(p){
+      return examenDe(p) === nombre && t.indexOf(p.tema) >= 0;
+    }).length;
+    el.querySelector(".cuenta").textContent = n;
+    el.classList.toggle("vacio", n === 0);
+  });
+}
+
 function actualizarDisponibles(){
+  refrescarCuentas();
   var n = preguntasDisponibles().length;
   var sel = $("#cantidad"), previo = sel.value;
   var opciones = [5,10,15,20,25,30].filter(function(x){ return x < n; });
@@ -96,14 +272,14 @@ function actualizarDisponibles(){
   else if(opciones.indexOf(10) >= 0) sel.value = "10";
 
   $("#disponibles").textContent = n === 0
-    ? "Selecciona al menos un tema."
+    ? "Sin preguntas con esa combinación."
     : n + (n === 1 ? " pregunta disponible" : " preguntas disponibles");
   $("#empezar").disabled = (n === 0);
   $("#aviso").classList.toggle("oculto", n > 0);
 }
 
 /* ---------- Arranque de la práctica ---------- */
-function empezar(){
+function empezar(limiteFijo){
   var disponibles = preguntasDisponibles();
   if(!disponibles.length) return;
 
@@ -128,8 +304,12 @@ function empezar(){
     timer: null
   };
 
-  var porPregunta = parseFloat($("#tiempo").value);
-  sesion.limite = porPregunta > 0 ? Math.round(porPregunta * 60 * cuantas) : 0;
+  if(typeof limiteFijo === "number" && limiteFijo > 0){
+    sesion.limite = limiteFijo;
+  } else {
+    var porPregunta = parseFloat($("#tiempo").value);
+    sesion.limite = porPregunta > 0 ? Math.round(porPregunta * 60 * cuantas) : 0;
+  }
   sesion.segundos = sesion.limite > 0 ? sesion.limite : 0;
 
   $("#estado").classList.remove("oculto");
@@ -226,6 +406,8 @@ function pintarResultados(porTiempo){
   var pct = Math.round(buenas / total * 100);
   var usado = s.limite > 0 ? (s.limite - s.segundos) : s.segundos;
 
+  enviarDatos(buenas, usado);
+
   // Desglose por tema
   var porTema = {};
   s.preguntas.forEach(function(p){
@@ -287,12 +469,17 @@ function pintarResultados(porTiempo){
     '<div class="barra-nav" style="margin-top:2rem">' +
       '<button class="btn lleno" id="repetir">Practicar otra vez</button>' +
       '<button class="btn" id="volver">Cambiar temas</button>' +
-    '</div>';
+    '</div>' +
+    (datosActivos()
+      ? '<p class="nota-datos"><b>Enviado de forma anónima:</b> ' +
+        'los temas de estas ' + total + ' preguntas y si se acertaron o no. ' +
+        'Sin nombre, sin código, sin nada que permita identificarte.</p>'
+      : '');
 
   $("#resultados").innerHTML = html;
   mate($("#resultados"));
 
-  $("#repetir").onclick = empezar;
+  $("#repetir").onclick = function(){ empezar(); };
   $("#volver").onclick  = function(){ pantalla("config"); };
 }
 
@@ -326,11 +513,17 @@ function iniciar(){
   }
   agruparTemas();
   pintarConfig();
-  $("#empezar").onclick   = empezar;
+  $("#empezar").onclick   = function(){ empezar(); };
   $("#anterior").onclick  = function(){ irA(sesion.indice - 1); };
   $("#siguiente").onclick = function(){ irA(sesion.indice + 1); };
   $("#terminar").onclick  = function(){ terminar(false); };
   $("#total-banco").textContent = window.BANCO.length;
+
+  if(datosActivos() && window.CONFIG.avisoDatos){
+    var av = $("#aviso-datos");
+    av.innerHTML = "<b>Nota:</b> " + window.CONFIG.avisoDatos;
+    av.classList.remove("oculto");
+  }
 }
 
 if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", iniciar);

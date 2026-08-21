@@ -1,11 +1,35 @@
+/* ===========================================================================
+   CONFIGURACIÓN DEL SITIO
+   Este es el único archivo que necesitas tocar para activar la recolección
+   de datos. Las instrucciones completas están en el README, sección 5.
+=========================================================================== */
+
 window.CONFIG = {
-  // Pega aquí la URL del script de Google cuando la tengas.
-  // Mientras esté vacía no se envía nada ni aparece ningún aviso.
+
+  /* Pega aquí la URL que te da Google al publicar el script.
+     Tiene esta forma:
+       https://script.google.com/macros/s/AKfycb..................../exec
+
+     Mientras esté vacía ("") NO se envía absolutamente nada y el aviso a los
+     alumnos tampoco aparece. El sitio funciona igual. */
   urlDatos: "",
 
+  /* Etiqueta que se guarda en cada fila, por si más adelante usas el mismo
+     tablero para varios cursos o secciones. Puede quedar vacía. */
   curso: "Nivelación en Matemáticas",
 
-  avisoDatos: "Esta práctica me ayuda a saber qué temas están costando más, " +
-              "para reforzarlos en clase. Se registra qué preguntas se acertaron, " +
-              "nunca quién las respondió."
+  /* Minutos que dura cada simulacro. Si un tipo de evaluación no está en esta
+     lista, se calcula 1 minuto y medio por pregunta. Ajusta según tus tiempos
+     reales de examen. */
+  duraciones: {
+    "PC1": 50, "PC2": 50, "PC3": 50, "PC4": 50,
+    "Examen parcial": 110, "Examen final": 110
+  },
+
+  /* Texto del aviso que ven los alumnos. Solo se muestra si urlDatos tiene
+     algo. Cámbialo con libertad, pero no lo quites: es lo que hace que la
+     recolección sea transparente. */
+  avisoDatos: "Al terminar se envía de forma anónima qué temas se acertaron y cuáles no, " +
+              "para saber qué conviene reforzar en clase. No se envía tu nombre, " +
+              "tu código ni ningún dato que permita identificarte."
 };

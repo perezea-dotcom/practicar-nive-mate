@@ -82,6 +82,18 @@ h2{font-size:1.35rem; color:var(--verde); margin-bottom:.8rem}
 }
 .tema.activo{border-color:var(--verde); background:var(--verde-muy-claro)}
 .tema.activo .cuenta{background:#fff}
+.tema.vacio{opacity:.45}
+.tema.vacio .cuenta{background:#F1F3F1; color:#9AA69E}
+
+.fichas{display:flex; flex-wrap:wrap; gap:.6rem}
+.ficha{
+  display:flex; flex-direction:column; align-items:flex-start; gap:.15rem;
+  border:2px solid var(--verde); background:var(--verde); color:#fff;
+  border-radius:12px; padding:.7rem 1.15rem; text-align:left;
+}
+.ficha b{font-size:1.02rem; font-weight:650}
+.ficha span{font-size:.82rem; opacity:.85; font-weight:400}
+.ficha:hover{background:var(--verde-osc); border-color:var(--verde-osc)}
 
 .enlace-mini{
   background:none; border:none; color:var(--verde); font:inherit; font-size:.9rem;
@@ -107,6 +119,12 @@ button{font:inherit; cursor:pointer; border-radius:10px; transition:all .15s eas
 .btn.grande{font-size:1.1rem; padding:.9rem 2.2rem}
 .btn:disabled{opacity:.35; cursor:default}
 .aviso{color:var(--rojo); font-size:.95rem; margin-top:.8rem}
+.nota-datos{
+  margin-top:1.6rem; padding:.9rem 1.2rem; border-radius:10px;
+  background:var(--verde-muy-claro); border:1px solid var(--verde-claro);
+  color:var(--gris); font-size:.92rem; line-height:1.5; max-width:62ch;
+}
+.nota-datos b{color:var(--verde)}
 
 /* ---------- Práctica ---------- */
 .puntos{display:flex; flex-wrap:wrap; gap:.4rem; margin-bottom:1.5rem}

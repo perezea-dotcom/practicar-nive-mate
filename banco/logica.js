@@ -10,6 +10,11 @@
      tema       Texto exacto. Las preguntas con el mismo tema se agrupan solas
                 en el selector; si escribes un tema nuevo, aparece nuevo.
      fuente     De dónde salió (aparece en los resultados). Ej: "PC1 2014-0".
+     examen     Tipo de evaluación: "PC1", "PC2", "Examen parcial",
+                "Examen final", "Material de clase"... Agrupa el segundo filtro,
+                el que permite armar una PC1 con preguntas de varios ciclos.
+                Si lo omites, se deduce del texto de "fuente".
+     ciclo      El ciclo, por ejemplo "2019-1". Opcional.
      enunciado  La pregunta. Fórmulas entre signos de dólar: $p \rightarrow q$
      opciones   Exactamente 4 alternativas.
      correcta   Índice de la alternativa correcta: 0 = la primera, 3 = la cuarta.
@@ -30,6 +35,8 @@ window.BANCO = (window.BANCO || []).concat([
 {
   tema: "Proposiciones y negación",
   fuente: "Clase 01",
+  examen: "Material de clase",
+  ciclo: "2026-0",
   enunciado: "¿Cuál de los siguientes enunciados <b>NO</b> es una proposición?",
   opciones: [
     "7 es un número par.",
@@ -43,6 +50,8 @@ window.BANCO = (window.BANCO || []).concat([
 {
   tema: "Proposiciones y negación",
   fuente: "Clase 01",
+  examen: "Material de clase",
+  ciclo: "2026-0",
   enunciado: "¿Cuál de los siguientes enunciados <b>SÍ</b> es una proposición?",
   opciones: [
     "¿A qué hora es la clase?",
@@ -56,6 +65,8 @@ window.BANCO = (window.BANCO || []).concat([
 {
   tema: "Proposiciones y negación",
   fuente: "Clase 01",
+  examen: "Material de clase",
+  ciclo: "2026-0",
   enunciado: "La negación de <b>«París es la capital de Francia»</b> es:",
   opciones: [
     "París no es la capital de Francia.",
@@ -69,6 +80,8 @@ window.BANCO = (window.BANCO || []).concat([
 {
   tema: "Proposiciones y negación",
   fuente: "Clase 01",
+  examen: "Material de clase",
+  ciclo: "2026-0",
   enunciado: "La proposición $\\neg(\\neg p)$ es equivalente a:",
   opciones: ["$\\neg p$", "$p$", "$p \\wedge \\neg p$", "$p \\vee \\neg p$"],
   correcta: 1,
@@ -79,6 +92,8 @@ window.BANCO = (window.BANCO || []).concat([
 {
   tema: "Tablas de verdad y conectores",
   fuente: "Clase 01",
+  examen: "Material de clase",
+  ciclo: "2026-0",
   enunciado: "¿Cuántas filas tiene la tabla de verdad de una proposición compuesta con <b>4</b> proposiciones simples $p, q, r, s$?",
   opciones: ["4 filas", "8 filas", "16 filas", "32 filas"],
   correcta: 2,
@@ -87,6 +102,8 @@ window.BANCO = (window.BANCO || []).concat([
 {
   tema: "Tablas de verdad y conectores",
   fuente: "Clase 01",
+  examen: "Material de clase",
+  ciclo: "2026-0",
   enunciado: "Si $p$ es <b>verdadera</b> y $q$ es <b>falsa</b>, ¿cuál de las siguientes proposiciones es <b>verdadera</b>?",
   opciones: ["$p \\wedge q$", "$p \\veebar q$", "$p \\leftrightarrow q$", "$\\neg p \\vee q$"],
   correcta: 1,
@@ -95,6 +112,8 @@ window.BANCO = (window.BANCO || []).concat([
 {
   tema: "Tablas de verdad y conectores",
   fuente: "Clase 01",
+  examen: "Material de clase",
+  ciclo: "2026-0",
   enunciado: "Si $p$ es <b>falsa</b>, ¿cuál de las siguientes proposiciones es <b>necesariamente verdadera</b>, sin importar el valor de $q$?",
   opciones: ["$p \\vee q$", "$\\neg p \\wedge q$", "$p \\rightarrow q$", "$p \\leftrightarrow q$"],
   correcta: 2,
@@ -103,6 +122,8 @@ window.BANCO = (window.BANCO || []).concat([
 {
   tema: "Tablas de verdad y conectores",
   fuente: "Clase 01",
+  examen: "Material de clase",
+  ciclo: "2026-0",
   enunciado: "En la tabla de verdad de $p \\vee q$, ¿en cuántas de las 4 filas el resultado es <b>V</b>?",
   opciones: ["En 1 fila", "En 2 filas", "En 3 filas", "En las 4 filas"],
   correcta: 2,
@@ -113,6 +134,8 @@ window.BANCO = (window.BANCO || []).concat([
 {
   tema: "La condicional",
   fuente: "Clase 01",
+  examen: "Material de clase",
+  ciclo: "2026-0",
   enunciado: "La proposición $p \\rightarrow q$ es <b>falsa</b> únicamente cuando:",
   opciones: [
     "$p$ es falsa y $q$ es verdadera",
@@ -126,6 +149,8 @@ window.BANCO = (window.BANCO || []).concat([
 {
   tema: "La condicional",
   fuente: "Clase 01",
+  examen: "Material de clase",
+  ciclo: "2026-0",
   enunciado: "Sea $p = $ «hago la tarea» y $q = $ «voy a la playa». La frase <b>«Voy a la playa siempre que haga la tarea»</b> se simboliza:",
   opciones: ["$q \\rightarrow p$", "$p \\rightarrow q$", "$p \\leftrightarrow q$", "$p \\wedge q$"],
   correcta: 1,
@@ -134,6 +159,8 @@ window.BANCO = (window.BANCO || []).concat([
 {
   tema: "La condicional",
   fuente: "Clase 01",
+  examen: "Material de clase",
+  ciclo: "2026-0",
   enunciado: "Con $p = $ «hago la tarea» y $q = $ «voy a la playa», la frase <b>«Voy a la playa solo si hago la tarea»</b> se simboliza:",
   opciones: ["$p \\rightarrow q$", "$q \\rightarrow p$", "$p \\wedge q$", "$\\neg p \\rightarrow \\neg q$"],
   correcta: 1,
@@ -141,7 +168,9 @@ window.BANCO = (window.BANCO || []).concat([
 },
 {
   tema: "La condicional",
-  fuente: "Tipo PC",
+  fuente: "Clase 01 · estilo PC",
+  examen: "Material de clase",
+  ciclo: "2026-0",
   enunciado: "Si $p \\rightarrow q$ es <b>verdadera</b> y $q$ es <b>falsa</b>, entonces necesariamente:",
   opciones: ["$p$ es verdadera", "$p$ es falsa", "$p$ puede ser V o F", "no hay información suficiente"],
   correcta: 1,
@@ -149,7 +178,9 @@ window.BANCO = (window.BANCO || []).concat([
 },
 {
   tema: "La condicional",
-  fuente: "Tipo PC",
+  fuente: "Clase 01 · estilo PC",
+  examen: "Material de clase",
+  ciclo: "2026-0",
   enunciado: "Si la proposición $p \\rightarrow q$ es <b>falsa</b>, ¿cuál es el valor de verdad de $q \\rightarrow p$?",
   opciones: ["Verdadera", "Falsa", "Depende del valor de $p$", "No se puede determinar"],
   correcta: 0,
@@ -160,6 +191,8 @@ window.BANCO = (window.BANCO || []).concat([
 {
   tema: "Contrapositiva y recíproca",
   fuente: "Clase 01",
+  examen: "Material de clase",
+  ciclo: "2026-0",
   enunciado: "La <b>contrapositiva</b> de «Si sube la tasa de interés, entonces el precio del bono baja» es:",
   opciones: [
     "Si el precio del bono baja, entonces sube la tasa de interés.",
@@ -173,6 +206,8 @@ window.BANCO = (window.BANCO || []).concat([
 {
   tema: "Contrapositiva y recíproca",
   fuente: "Clase 01",
+  examen: "Material de clase",
+  ciclo: "2026-0",
   enunciado: "La <b>recíproca</b> de «Si llueve, entonces la pista se moja» es:",
   opciones: [
     "Si la pista se moja, entonces llueve.",
@@ -188,6 +223,8 @@ window.BANCO = (window.BANCO || []).concat([
 {
   tema: "Equivalencias y De Morgan",
   fuente: "Clase 01",
+  examen: "Material de clase",
+  ciclo: "2026-0",
   enunciado: "¿Cuál de las siguientes proposiciones es <b>equivalente</b> a $p \\rightarrow q$?",
   opciones: ["$\\neg p \\wedge q$", "$\\neg p \\vee q$", "$p \\vee \\neg q$", "$p \\wedge \\neg q$"],
   correcta: 1,
@@ -196,6 +233,8 @@ window.BANCO = (window.BANCO || []).concat([
 {
   tema: "Equivalencias y De Morgan",
   fuente: "Clase 01",
+  examen: "Material de clase",
+  ciclo: "2026-0",
   enunciado: "¿Cuál es la <b>negación</b> de $p \\rightarrow q$?",
   opciones: ["$\\neg p \\rightarrow \\neg q$", "$q \\rightarrow p$", "$p \\wedge \\neg q$", "$\\neg p \\vee q$"],
   correcta: 2,
@@ -204,6 +243,8 @@ window.BANCO = (window.BANCO || []).concat([
 {
   tema: "Equivalencias y De Morgan",
   fuente: "Clase 01 · ejercicio 2b",
+  examen: "Material de clase",
+  ciclo: "2026-0",
   enunciado: "<b>«Es falso que hablamos y no trabajamos»</b> equivale a:",
   opciones: [
     "No hablamos y trabajamos.",
@@ -217,6 +258,8 @@ window.BANCO = (window.BANCO || []).concat([
 {
   tema: "Equivalencias y De Morgan",
   fuente: "Clase 01",
+  examen: "Material de clase",
+  ciclo: "2026-0",
   enunciado: "La proposición $\\neg(p \\vee q)$ es equivalente a:",
   opciones: ["$\\neg p \\vee \\neg q$", "$\\neg p \\wedge \\neg q$", "$p \\wedge \\neg q$", "$\\neg p \\rightarrow q$"],
   correcta: 1,
@@ -224,7 +267,9 @@ window.BANCO = (window.BANCO || []).concat([
 },
 {
   tema: "Equivalencias y De Morgan",
-  fuente: "Tipo PC",
+  fuente: "Clase 01 · estilo PC",
+  examen: "Material de clase",
+  ciclo: "2026-0",
   enunciado: "La negación de <b>«Alonso sale temprano o tiene asesoría de Mate»</b> es:",
   opciones: [
     "Alonso no sale temprano o no tiene asesoría de Mate.",
@@ -240,6 +285,8 @@ window.BANCO = (window.BANCO || []).concat([
 {
   tema: "Tautologías",
   fuente: "Clase 01",
+  examen: "Material de clase",
+  ciclo: "2026-0",
   enunciado: "¿Cuál de las siguientes proposiciones es una <b>tautología</b>?",
   opciones: ["$p \\wedge \\neg p$", "$p \\vee \\neg p$", "$p \\rightarrow \\neg p$", "$p \\leftrightarrow \\neg p$"],
   correcta: 1,
@@ -248,6 +295,8 @@ window.BANCO = (window.BANCO || []).concat([
 {
   tema: "Tautologías",
   fuente: "Clase 01",
+  examen: "Material de clase",
+  ciclo: "2026-0",
   enunciado: "¿Cuál de las siguientes proposiciones es una <b>contradicción</b>, es decir, falsa en todas las filas de su tabla?",
   opciones: ["$p \\vee \\neg p$", "$p \\rightarrow p$", "$p \\wedge \\neg p$", "$p \\vee q$"],
   correcta: 2,
@@ -255,7 +304,9 @@ window.BANCO = (window.BANCO || []).concat([
 },
 {
   tema: "Tautologías",
-  fuente: "Tipo PC",
+  fuente: "Clase 01 · estilo PC",
+  examen: "Material de clase",
+  ciclo: "2026-0",
   enunciado: "La proposición $[(p \\rightarrow q) \\wedge p] \\rightarrow q$ es:",
   opciones: [
     "una tautología",
@@ -269,6 +320,8 @@ window.BANCO = (window.BANCO || []).concat([
 {
   tema: "Tautologías",
   fuente: "Clase 01 · ejercicio 4c",
+  examen: "Material de clase",
+  ciclo: "2026-0",
   enunciado: "La proposición $(p \\rightarrow q) \\leftrightarrow (\\neg q \\rightarrow \\neg p)$ es:",
   opciones: [
     "una contradicción",
