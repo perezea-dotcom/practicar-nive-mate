@@ -388,6 +388,21 @@ function irA(k){
 }
 
 /* ---------- Resultados ---------- */
+/* Salir de la práctica y volver a la configuración, sin pasar por resultados.
+   Si el alumno ya respondió algo, se pide confirmación: perdería su avance. */
+function salir(){
+  if(!sesion) { pantalla("config"); return; }
+  var respondidas = sesion.preguntas.filter(function(p){ return p.respuesta !== null; }).length;
+  if(respondidas > 0 &&
+     !confirm("Vas a salir sin ver los resultados y se perderán las " +
+              respondidas + " respuesta(s) que marcaste. ¿Salir?")) return;
+  clearInterval(sesion.timer);
+  sesion = null;
+  $("#estado").classList.add("oculto");
+  $("#progreso").style.width = "0%";
+  pantalla("config");
+}
+
 function terminar(porTiempo){
   var faltan = sesion.preguntas.filter(function(p){ return p.respuesta === null; }).length;
   if(!porTiempo && faltan > 0){
@@ -492,6 +507,7 @@ document.addEventListener("click", function(e){
 });
 document.addEventListener("keydown", function(e){
   if($("#practica").classList.contains("oculto")) return;
+  if(e.key === "Escape"){ e.preventDefault(); salir(); return; }
   var q = sesion && sesion.preguntas[sesion.indice];
   if(!q) return;
   if(e.key === "ArrowRight"){ e.preventDefault(); irA(sesion.indice + 1); }
@@ -517,6 +533,7 @@ function iniciar(){
   $("#anterior").onclick  = function(){ irA(sesion.indice - 1); };
   $("#siguiente").onclick = function(){ irA(sesion.indice + 1); };
   $("#terminar").onclick  = function(){ terminar(false); };
+  $("#salir").onclick     = salir;
   $("#total-banco").textContent = window.BANCO.length;
 
   if(datosActivos() && window.CONFIG.avisoDatos){
