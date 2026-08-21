@@ -170,6 +170,150 @@ window.BANCO = (window.BANCO || []).concat([
   correcta: 1,
   solucion: "$\\neg p$ afirma que <b>existe</b> un $x$ con $x + 1 > 0$ y $x^2 \\leq 0$. El $0$ cumple las dos: $0 + 1 = 1 > 0$, y $0^2 = 0$, que sí es $\\leq 0$. Basta ese testigo, así que $\\neg p$ es verdadera — y por lo tanto $p$ es falsa.",
   ojo: "$x = -2$ no sirve: $-2 + 1 = -1$, que no es mayor que cero, así que no cumple la primera condición. El $0$ es el único elemento de $U$ que funciona, y es fácil pasarlo por alto porque uno tiende a pensar que $x^2 > 0$ «siempre»."
+},
+
+/* ===========================  PC2  ======================================
+   Temas del examen: preguntas cortas · logaritmos y productos notables ·
+   ley de exponentes y logaritmos · cardinalidad
+   ====================================================================== */
+
+{
+  tema: "Cardinalidad",
+  fuente: "PC2 2026-1",
+  examen: "PC2",
+  ciclo: "2026-1",
+  enunciado: "Sean $A = \\{0, 1, 2\\}$ y $B = \\{-3, -2, 0, 1\\}$. Los valores de $n(A \\cap B)$ y $n(A - B)$ son, respectivamente:",
+  opciones: ["$3$ y $2$", "$2$ y $1$", "$1$ y $2$", "$2$ y $3$"],
+  dos: true,
+  correcta: 1,
+  solucion: "$A \\cap B = \\{0, 1\\}$, los elementos que están en los dos, así que $n(A \\cap B) = 2$. Y $A - B = \\{2\\}$, lo que está en $A$ y no en $B$, así que $n(A - B) = 1$.",
+  ojo: "Ojo con el orden de la diferencia: $B - A = \\{-3, -2\\}$ tiene <b>dos</b> elementos, no uno. Es el mismo par de conjuntos y da distinto según cuál va primero."
+},
+{
+  tema: "Logaritmos y exponentes",
+  fuente: "PC2 2026-1",
+  examen: "PC2",
+  ciclo: "2026-1",
+  enunciado: "Sean $a, b \\in \\mathbb{N}$. Si $\\log(2^{7}) + \\log(7^{4}) = a\\log(2) + b\\log(7)$, entonces:",
+  opciones: ["$a = 7$ y $b = 4$", "$a = 2$ y $b = 7$", "$a = 14$ y $b = 28$", "$a = 128$ y $b = 2401$"],
+  correcta: 0,
+  solucion: "La propiedad clave es que el exponente <b>baja multiplicando</b>: $\\log(x^{n}) = n\\log(x)$. Entonces $\\log(2^{7}) = 7\\log(2)$ y $\\log(7^{4}) = 4\\log(7)$.",
+  ojo: "La última alternativa es la trampa de calcular $2^{7} = 128$ y $7^{4} = 2401$ antes de aplicar la propiedad. Se puede, pero entonces ya no queda de la forma $a\\log(2) + b\\log(7)$."
+},
+{
+  tema: "Productos notables",
+  fuente: "PC2 2026-1",
+  examen: "PC2",
+  ciclo: "2026-1",
+  enunciado: "Sean $a, b \\in \\mathbb{R}$. El producto $(a - b)(a^{2} + ab + b^{2})$ es igual a:",
+  opciones: ["$a^{3} + b^{3}$", "$(a-b)^{3}$", "$a^{3} - b^{3}$", "$a^{3} - 3a^{2}b + 3ab^{2} - b^{3}$"],
+  dos: true,
+  correcta: 2,
+  solucion: "Es la <b>diferencia de cubos</b>: $a^{3} - b^{3} = (a - b)(a^{2} + ab + b^{2})$. Al desarrollar, todos los términos cruzados se cancelan y solo sobreviven $a^{3}$ y $-b^{3}$.",
+  ojo: "Fíjate en el signo del paréntesis corto, que es el que manda: con $(a - b)$ delante sale la <b>resta</b> de cubos, y con $(a + b)(a^{2} - ab + b^{2})$ sale la suma. La última alternativa es $(a-b)^{3}$ desarrollado, que es otra cosa."
+},
+{
+  tema: "Cardinalidad",
+  fuente: "PC2 2026-1",
+  examen: "PC2",
+  ciclo: "2026-1",
+  enunciado: "¿Por qué es <b>falsa</b> la proposición $\\forall A, B \\subset U, [\\, n(A) = n(B) \\rightarrow A = B \\,]$?",
+  opciones: [
+    "Porque $A = \\{1\\}$ y $B = \\{-1\\}$ tienen un elemento cada uno y son distintos",
+    "Porque dos conjuntos siempre tienen distinta cantidad de elementos",
+    "Porque el conjunto vacío no tiene cardinal",
+    "Porque $n(A) = n(B)$ nunca puede ocurrir si $A \\neq B$"
+  ],
+  correcta: 0,
+  solucion: "Contar cuántos elementos hay no dice <b>cuáles</b> son. $\\{1\\}$ y $\\{-1\\}$ tienen ambos un elemento, pero no son el mismo conjunto. Basta ese contraejemplo.",
+  ojo: "La implicación sí funciona al revés: si $A = B$, entonces por supuesto $n(A) = n(B)$. Es un caso más de que voltear una condicional cambia lo que afirma."
+},
+{
+  tema: "Logaritmos y exponentes",
+  fuente: "PC2 2026-1",
+  examen: "PC2",
+  ciclo: "2026-1",
+  enunciado: "¿Por qué es <b>falsa</b> la proposición $\\forall x, y \\in \\mathbb{R}, \\forall a \\in \\mathbb{R}^{+}, [\\, a^{x} = a^{y} \\rightarrow x = y \\,]$?",
+  opciones: [
+    "Porque con $a = 0$ ambos lados valen cero",
+    "Porque con $a = 1$ se tiene $1^{10} = 1^{15}$ y sin embargo $10 \\neq 15$",
+    "Porque los exponentes negativos no están permitidos",
+    "Porque $a^{x} = a^{y}$ nunca se cumple si $x \\neq y$"
+  ],
+  correcta: 1,
+  solucion: "El $1$ rompe la regla: elevado a lo que sea da siempre $1$, así que la igualdad de potencias no obliga a que los exponentes coincidan. La propiedad vale para $a > 0$ <b>con $a \\neq 1$</b>, y el enunciado se olvidó de excluirlo.",
+  ojo: "$a = 0$ no sirve de contraejemplo porque el enunciado pide $a \\in \\mathbb{R}^{+}$, y el cero no es positivo. Un contraejemplo tiene que respetar las hipótesis: si te sales del universo, no refutas nada."
+},
+{
+  tema: "Logaritmos y exponentes",
+  fuente: "PC2 2026-1",
+  examen: "PC2",
+  ciclo: "2026-1",
+  enunciado: "La ganancia acumulada de una empresa es $G = a\\log_{9}(2t + 1) + b$ mil soles, con $t$ en meses. Si a los <b>4 meses</b> la ganancia fue de $5a$ mil soles, entonces:",
+  opciones: ["$b = a$", "$b = 5a$", "$b = 4a$", "$b = 9a$"],
+  dos: true,
+  correcta: 2,
+  solucion: "Se reemplaza $t = 4$: el argumento queda $2(4) + 1 = 9$, y $\\log_{9}(9) = 1$. Entonces $5a = a \\cdot 1 + b$, de donde $b = 4a$.",
+  ojo: "El examen elige el $4$ a propósito para que el argumento caiga justo en $9$, la base del logaritmo. Cuando los números salen así de redondos, suele ser señal de que vas por el camino correcto."
+},
+{
+  tema: "Logaritmos y exponentes",
+  fuente: "PC2 2026-1",
+  examen: "PC2",
+  ciclo: "2026-1",
+  enunciado: "Con $G = a\\log_{9}(2t + 1) + 4a$, ¿después de cuántos meses la ganancia acumulada será de $6a$ mil soles?",
+  opciones: ["$t = 9$", "$t = 40$", "$t = 41$", "$t = 80$"],
+  dos: true,
+  correcta: 1,
+  solucion: "Se plantea $6a = a\\log_{9}(2t+1) + 4a$, se cancela la $a$ y queda $\\log_{9}(2t+1) = 2$. Pasando a forma exponencial: $2t + 1 = 9^{2} = 81$, luego $t = 40$.",
+  ojo: "El $41$ sale de olvidar dividir entre dos al final, y el $9$ de confundir $\\log_{9}(2t+1) = 2$ con $2t+1 = 9$. El paso que hay que hacer con cuidado es convertir el logaritmo en potencia."
+},
+{
+  tema: "Productos notables",
+  fuente: "PC2 2026-1",
+  examen: "PC2",
+  ciclo: "2026-1",
+  enunciado: "Sean $a = (\\sqrt{2}+\\sqrt{3}+\\sqrt{5})^{2}$, $b = (\\sqrt{2}+\\sqrt{3}-\\sqrt{5})^{2}$, $c = (\\sqrt{2}-\\sqrt{3}+\\sqrt{5})^{2}$ y $d = (\\sqrt{2}-\\sqrt{3}-\\sqrt{5})^{2}$. El valor de $E = a+b+c+d$ es:",
+  opciones: ["$20$", "$30$", "$40$", "$10\\sqrt{6}$"],
+  dos: true,
+  correcta: 2,
+  solucion: "Se agrupan de a dos usando la <b>identidad de Legendre</b>, $(m+n)^{2} + (m-n)^{2} = 2(m^{2}+n^{2})$. Con $m = \\sqrt{2}+\\sqrt{3}$ y $n = \\sqrt{5}$: $a + b = 2(\\sqrt{2}+\\sqrt{3})^{2} + 10$. Con $m = \\sqrt{2}-\\sqrt{3}$: $c + d = 2(\\sqrt{2}-\\sqrt{3})^{2} + 10$.<br><br>Sumando y aplicando Legendre otra vez: $E = 2\\big(2 \\cdot 2 + 2 \\cdot 3\\big) + 20 = 40$.",
+  ojo: "La gracia del ejercicio es que <b>no hay que desarrollar nada</b>. Si te lanzas a expandir los cuatro cuadrados con raíces, el ejercicio se vuelve interminable y aparecen errores de signo. Agrupar primero es la diferencia entre dos minutos y quince."
+},
+{
+  tema: "Logaritmos y exponentes",
+  fuente: "PC2 2026-1",
+  examen: "PC2",
+  ciclo: "2026-1",
+  enunciado: "Sean $a, b, x, y \\in \\mathbb{R}$ con $a > b$, $x > 0$, $y > 0$. Si $x^{a}y^{b} = 3^{a}$ y $x^{b}y^{a} = 3^{b}$, los valores de $xy$ y $\\dfrac{x}{y}$ son:",
+  opciones: ["$xy = 3$ y $\\dfrac{x}{y} = 3$", "$xy = 9$ y $\\dfrac{x}{y} = 1$", "$xy = 3$ y $\\dfrac{x}{y} = 1$", "$xy = 1$ y $\\dfrac{x}{y} = 3$"],
+  correcta: 0,
+  solucion: "Dos movimientos simétricos. <b>Multiplicando</b> las dos ecuaciones: $x^{a+b}y^{a+b} = 3^{a+b}$, o sea $(xy)^{a+b} = 3^{a+b}$, de donde $xy = 3$. <b>Dividiendo</b>: $x^{a-b}y^{b-a} = 3^{a-b}$, o sea $\\left(\\frac{x}{y}\\right)^{a-b} = 3^{a-b}$, de donde $\\frac{x}{y} = 3$.",
+  ojo: "La condición $a > b$ está puesta justamente para que $a - b \\neq 0$ y se pueda concluir de la división. Las hipótesis que parecen decorativas casi nunca lo son."
+},
+{
+  tema: "Logaritmos y exponentes",
+  fuente: "PC2 2026-1",
+  examen: "PC2",
+  ciclo: "2026-1",
+  enunciado: "Determine el valor simplificado de $E = \\sqrt[5]{\\dfrac{7 \\cdot x^{\\log_{5} y} + 5^{2} \\cdot x^{\\log_{5} y}}{x^{\\log_{5} y}}}$.",
+  opciones: ["$32$", "$2$", "$5$", "Depende de $x$ e $y$"],
+  dos: true,
+  correcta: 1,
+  solucion: "El numerador tiene <b>factor común</b> $x^{\\log_{5} y}$: sale $(7 + 25)\\,x^{\\log_{5} y} = 32\\,x^{\\log_{5} y}$. Ese factor se cancela con el denominador y queda $E = \\sqrt[5]{32} = 2$.",
+  ojo: "El $x^{\\log_{5} y}$ está ahí para intimidar. No hay que saber cuánto vale: basta ver que es el mismo arriba y abajo. Reconocer el factor común antes de intentar calcularlo es todo el ejercicio."
+},
+{
+  tema: "Cardinalidad",
+  fuente: "PC2 2026-1",
+  examen: "PC2",
+  ciclo: "2026-1",
+  enunciado: "En un diagrama de Venn de cuatro carreras, las regiones exclusivas resultaron: solo Finanzas 13, solo Economía 7, solo Marketing 17 y solo Derecho 19. ¿Cuántos estudiantes prefieren <b>solo una</b> de las carreras?",
+  opciones: ["$36$", "$56$", "$19$", "No se puede saber sin los datos de las intersecciones"],
+  dos: true,
+  correcta: 1,
+  solucion: "«Solo una carrera» son exactamente las regiones que no se solapan con ninguna otra. Se suman las cuatro: $13 + 7 + 17 + 19 = 56$.",
+  ojo: "No hacen falta las intersecciones: ya están excluidas por definición de «solo». El trabajo difícil del ejercicio es <b>llegar</b> a esos cuatro números rellenando el diagrama de adentro hacia afuera; una vez que los tienes, esta parte es una suma."
 }
 
 ]);
