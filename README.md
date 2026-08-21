@@ -2,7 +2,7 @@
 
 Sitio de práctica con banco de preguntas por temas, selección aleatoria,
 cronómetro y soluciones al final. Funciona sin servidor y sin base de datos:
-todo corre en el navegador del alumno.
+todo corre en el navegador del alumno..
 
 ---
 
