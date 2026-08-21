@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prueba de compatibilidad · Práctica Nive</title>
+
+<link rel="stylesheet" href="assets/estilos.css">
+<link rel="stylesheet" href="assets/katex/katex.min.css">
+<script defer src="assets/katex/katex.min.js"></script>
+<script defer src="assets/katex/auto-render.min.js"></script>
+<style>
+  body{padding:2.5rem 1.5rem; font-family:"Segoe UI",Arial,sans-serif; background:#FBFCFB}
+  .caja{max-width:640px; margin:0 auto}
+  h1{font-size:1.6rem; color:#325D3D; margin-bottom:.4rem}
+  p.sub{color:#6B7770; margin-bottom:1.8rem}
+  ul{list-style:none; display:grid; gap:.6rem; margin-bottom:1.8rem}
+  li{display:flex; align-items:center; gap:.9rem; border:2px solid #D6DFD8;
+     border-radius:12px; padding:.85rem 1.1rem; background:#fff; font-size:1.02rem}
+  li.ok{border-color:#1E7A3C; background:#E6F4EA}
+  li.mal{border-color:#B3261E; background:#FBE9E7}
+  .icono{font-size:1.3rem; font-weight:700; width:1.5rem; text-align:center}
+  li.ok .icono{color:#1E7A3C} li.mal .icono{color:#B3261E}
+  .veredicto{border-radius:14px; padding:1.2rem 1.4rem; font-size:1.05rem; line-height:1.55}
+  .bien{background:#E6F4EA; border-left:6px solid #1E7A3C; color:#14532B}
+  .fallo{background:#FBE9E7; border-left:6px solid #B3261E; color:#7A1810}
+</style>
+</head>
+<body>
+<div class="caja">
+  <h1>Prueba de compatibilidad</h1>
+  <p class="sub">Sube esta carpeta a Blackboard y abre <b>esta página</b> antes que nada.
+     Comprueba que la plataforma ejecute el sitio correctamente.</p>
+
+  <ul id="lista">
+    <li class="mal"><span class="icono">✗</span>
+      <span><b>JavaScript.</b> Si sigues viendo esta línea en rojo, la plataforma
+      no está ejecutando el código y el sitio no funcionará ahí.</span></li>
+  </ul>
+
+  <div id="veredicto"></div>
+</div>
+
+<script src="banco/logica.js"></script>
+<script>
+(function(){
+  var pruebas = [];
+
+  pruebas.push({
+    nombre: "JavaScript se ejecuta",
+    ok: true,
+    detalle: "La plataforma corre el código de la página."
+  });
+
+  // ¿Cargó la hoja de estilos desde assets/?
+  var css = false;
+  try{
+    var sonda = document.createElement("div");
+    sonda.className = "btn"; sonda.style.position = "absolute"; sonda.style.left = "-9999px";
+    document.body.appendChild(sonda);
+    css = getComputedStyle(sonda).borderStyle === "solid";
+    document.body.removeChild(sonda);
+  }catch(e){}
+  pruebas.push({
+    nombre: "Estilos desde assets/",
+    ok: css,
+    detalle: css ? "Las rutas entre carpetas funcionan."
+                 : "No se cargó assets/estilos.css: la plataforma está rompiendo las rutas relativas."
+  });
+
+  // ¿Cargó el banco de preguntas desde banco/?
+  var banco = !!(window.BANCO && window.BANCO.length);
+  pruebas.push({
+    nombre: "Banco de preguntas desde banco/",
+    ok: banco,
+    detalle: banco ? window.BANCO.length + " preguntas cargadas correctamente."
+                   : "No se cargó banco/logica.js."
+  });
+
+  function pintar(){
+    // ¿Cargó KaTeX? (se comprueba al final porque usa defer)
+    var katex = !!window.renderMathInElement;
+    pruebas.push({
+      nombre: "Fórmulas (KaTeX) desde assets/katex/",
+      ok: katex,
+      detalle: katex ? "Las fórmulas se verán como matemáticas, no como código."
+                     : "No cargó KaTeX: las fórmulas se verían como $p \\rightarrow q$."
+    });
+
+    document.getElementById("lista").innerHTML = pruebas.map(function(p){
+      return '<li class="' + (p.ok ? "ok" : "mal") + '">' +
+             '<span class="icono">' + (p.ok ? "✓" : "✗") + '</span>' +
+             '<span><b>' + p.nombre + '.</b> ' + p.detalle + '</span></li>';
+    }).join("");
+
+    var todo = pruebas.every(function(p){ return p.ok; });
+    document.getElementById("veredicto").innerHTML = todo
+      ? '<div class="veredicto bien"><b>Todo correcto.</b> El sitio va a funcionar en esta ' +
+        'plataforma. Abre <b>index.html</b> y haz una práctica completa para confirmarlo. ' +
+        'Después puedes borrar este archivo de prueba.</div>'
+      : '<div class="veredicto fallo"><b>Hay algo que no cargó.</b> Revisa las líneas en rojo. ' +
+        'La causa más común es haber subido el archivo comprimido sin desempaquetarlo, ' +
+        'o haber perdido la estructura de carpetas al subirlo.</div>';
+  }
+
+  if(document.readyState === "complete") pintar();
+  else window.addEventListener("load", pintar);
+})();
+</script>
+</body>
+</html>

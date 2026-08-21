@@ -47,8 +47,9 @@ terminal y sin instalar nada.
 
 1. Crea una cuenta gratuita en **https://github.com**
 2. Pulsa el botón **+** (arriba a la derecha) → **New repository**.
-3. Nombre: `practica-nive`. Deja **Public**.
-   (Ponerlo privado no esconde nada: ver la nota de seguridad más abajo.)
+3. Nombre: `practica-nive`. Elige **Private**.
+   (Vercel despliega repositorios privados sin problema en el plan gratuito.
+   Ver la nota de seguridad más abajo.)
 4. **Create repository**.
 
 **Paso 2 — Subir los archivos**
@@ -103,6 +104,22 @@ Conclusión práctica:
   con servidor que guarde las respuestas fuera del alcance del alumno —
   Blackboard, Moodle o similares.
 
+### Y una segunda razón para el repositorio privado
+
+Aparte de los alumnos, está el banco en sí. Un banco curado de exámenes reales,
+etiquetado por tema y con soluciones, es material valioso para academias de
+preparación. Un repositorio **público** es un canal de distribución aparte del
+sitio: se clona entero con un comando, se indexa en buscadores y se bifurca, y
+esas copias quedan fuera de tu control aunque después lo cierres.
+
+En **privado** eso no ocurre. Y si el material sale de exámenes de la
+universidad, conviene además conversar con el departamento antes de publicarlo
+abiertamente: la decisión no es solo tuya, y tenerlo conversado te protege.
+
+Si el banco crece y te importa este punto, la ruta con control de acceso real es
+subir el sitio **dentro del aula virtual del curso**, donde solo entra quien está
+matriculado.
+
 ---
 
 ## 3. Agregar preguntas
@@ -125,6 +142,8 @@ cualquier editor de texto, copia un bloque completo y edítalo:
 |---|---|
 | `tema` | Texto exacto. Los temas iguales se agrupan solos; uno nuevo aparece nuevo en el selector. |
 | `fuente` | De dónde salió. Se muestra en los resultados. Opcional. |
+| `examen` | Tipo de evaluación: `"PC1"`, `"PC2"`, `"Examen parcial"`, `"Examen final"`, `"Material de clase"`. Es lo que agrupa el segundo filtro. Si lo omites se deduce del texto de `fuente`. |
+| `ciclo` | El ciclo, por ejemplo `"2019-1"`. Opcional. |
 | `enunciado` | La pregunta. Fórmulas entre signos de dólar. |
 | `opciones` | Exactamente 4 alternativas. |
 | `correcta` | Índice de la correcta: `0` es la primera, `3` la cuarta. |
@@ -142,6 +161,20 @@ comilla. En el navegador, `F12` → pestaña *Console* te dice la línea exacta.
 
 No hace falta tocar `correcta` pensando en el orden: el sitio baraja las
 alternativas en cada intento.
+
+### El filtro por tipo de evaluación
+
+El campo `examen` es lo que permite que un alumno elija **«PC1»** y reciba una
+práctica calificada nueva, armada con preguntas de las PC1 de todos los ciclos
+que tengas cargados. Por eso conviene etiquetar bien: `examen: "PC1"` para todas
+las PC1, sin importar de qué año sean, y el año va aparte en `ciclo`.
+
+El bloque de filtro solo aparece en el sitio cuando hay **más de un tipo** de
+evaluación en el banco. Con un solo tipo estorba, así que se oculta solo.
+
+Junto a cada tema verás cuántas preguntas aporta **dentro del tipo elegido**: si
+marcas solo PC1, los temas que nunca han salido en una PC1 se ven en gris con un
+cero. Es una forma rápida de detectar huecos en tu banco.
 
 ### Agregar un curso o capítulo nuevo
 

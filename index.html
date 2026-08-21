@@ -47,13 +47,39 @@
       Las soluciones aparecen al final, como en un examen real.
     </p>
 
+    <!-- Simulacros: arman una evaluación completa de un tipo, mezclando ciclos.
+         Solo aparece si el banco tiene preguntas de evaluaciones reales. -->
+    <div class="seccion oculto" id="bloque-simulacros">
+      <span class="etiqueta-campo">Simulacros</span>
+      <p class="cifra" style="text-align:left;margin:-.3rem 0 .8rem">
+        Arman una evaluación completa con preguntas de ese tipo, tomadas de todos los ciclos.
+        Cada intento sale distinto.
+      </p>
+      <div class="fichas" id="simulacros"></div>
+    </div>
+
     <div class="seccion">
       <span class="etiqueta-campo">Temas
         <button class="enlace-mini" id="todos">todos</button>
         <button class="enlace-mini" id="ninguno">ninguno</button>
       </span>
       <div class="temas" id="temas"></div>
-      <p class="aviso oculto" id="aviso">Selecciona al menos un tema para empezar.</p>
+    </div>
+
+    <!-- Segundo filtro. Solo aparece si el banco tiene más de un tipo
+         de evaluación (PC1, EP, EF, material de clase...). -->
+    <div class="seccion oculto" id="bloque-examenes">
+      <span class="etiqueta-campo">Tipo de evaluación
+        <button class="enlace-mini" id="todos-ex">todos</button>
+        <button class="enlace-mini" id="ninguno-ex">ninguno</button>
+      </span>
+      <div class="temas" id="examenes"></div>
+    </div>
+
+    <div class="seccion">
+      <p class="aviso oculto" id="aviso">
+        No hay preguntas con esa combinación. Amplía los temas o los tipos de evaluación.
+      </p>
     </div>
 
     <div class="seccion fila-campos">
@@ -111,6 +137,7 @@
      Para agregar un curso o capítulo nuevo: crea el archivo en la carpeta
      banco/ y añádelo aquí con una línea igual a la de abajo. -->
 <script src="banco/logica.js"></script>
+<script src="banco/2026-1.js"></script>
 
 <script src="assets/config.js"></script>
 <script src="assets/app.js"></script>
